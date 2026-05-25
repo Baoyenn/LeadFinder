@@ -10,7 +10,7 @@ Tool tự động crawl leads từ LinkedIn, gồm Chrome Extension + Flask API 
 - **Extension**: Chrome Extension (Vanilla JS)
 - **Backend**: Python Flask + Gunicorn
 - **Frontend**: HTML/CSS/JS thuần
-- **Deploy**: Netlify (frontend) + Render (backend)
+- **Deploy**: Render (Full stack)
 ## Cấu trúc dự án
 
 ```
