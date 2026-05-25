@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "LeadFinder — LinkedIn Crawler",
+  "version": "1.1.0",
+  "description": "Crawl LinkedIn profiles and send to LeadFinder dashboard",
+  "permissions": ["activeTab", "storage", "scripting", "tabs"],
+  "host_permissions": ["https://www.linkedin.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "32": "icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "32": "icon.png"
+  }
+}

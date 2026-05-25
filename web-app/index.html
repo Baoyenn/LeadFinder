@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeadFinder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/><circle cx="11" cy="11" r="3"/></svg>
+    LeadFinder
+  </div>
+  <div class="topbar-mid">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search leads…" id="globalSearch" oninput="onSearch(this.value)">
+    </div>
+  </div>
+  <div class="topbar-right">
+    <div class="backend-dot" id="backendDot"></div>
+    <span class="backend-label" id="backendLabel">Connecting…</span>
+    <div class="avatar">LF</div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="nav-section">Main</div>
+    <div class="nav-item active" onclick="showPage('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="showPage('leads')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      All Leads
+      <span class="nav-count" id="navCount">0</span>
+    </div>
+    <div class="nav-section">Actions</div>
+    <div class="nav-item" onclick="exportCSV()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export CSV
+    </div>
+    <div class="nav-item" onclick="showPage('import')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Import JSON
+    </div>
+    <div class="nav-section">System</div>
+    <div class="nav-item" onclick="showPage('dupes')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16v-1a2 2 0 0 1 2-2h1"/><path d="M4 12V5a2 2 0 0 1 2-2h7"/></svg>
+      Duplicates
+    </div>
+    <div class="nav-item" onclick="showPage('settings')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M4.93 4.93l1.41 1.41M12 2v2M12 20v2M20 12h2M2 12h2M19.07 19.07l-1.41-1.41M4.93 19.07l1.41-1.41"/></svg>
+      Settings
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card">
+          <div class="stat-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg> Total Leads</div>
+          <div class="stat-value" id="statTotal">—</div>
+          <div class="stat-sub">All time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Verified</div>
+          <div class="stat-value" id="statVerified" style="color:var(--green)">—</div>
+          <div class="stat-sub" id="statVerRate">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M4 16v-1a2 2 0 0 1 2-2h1"/><path d="M4 12V5a2 2 0 0 1 2-2h7"/></svg> Duplicates</div>
+          <div class="stat-value" id="statDupes" style="color:var(--amber)">—</div>
+          <div class="stat-sub">Auto-detected</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> New</div>
+          <div class="stat-value" id="statNew" style="color:var(--accent)">—</div>
+          <div class="stat-sub">Pending review</div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <span style="font-size:13px;font-weight:500">Recent Leads</span>
+        <div style="flex:1"></div>
+        <button class="btn btn-danger btn-bulk-delete" onclick="bulkDelete()" style="display:none;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          Xóa <span class="bulk-count">0</span> đã chọn
+        </button>
+        <button class="btn btn-success" onclick="exportCSV()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export CSV
+        </button>
+        <button class="btn btn-danger" onclick="clearAll()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+          Clear all
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th style="width:30px"><input type="checkbox" class="select-all" onchange="toggleSelectAll(this, 'dashTable')"></th>
+              <th>Name</th><th>Position</th><th>Company</th><th>Location</th><th>Email</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="dashTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL LEADS -->
+    <div class="page" id="page-leads">
+      <div class="toolbar">
+        <span style="font-size:13px;font-weight:500">All Leads</span>
+        <div class="toolbar-left">
+          <select class="filter-select" id="filterStatus" onchange="renderLeadsPage()">
+            <option value="">All statuses</option>
+            <option value="new">New</option>
+            <option value="verified">Verified</option>
+            <option value="duplicate">Duplicate</option>
+          </select>
+        </div>
+        <button class="btn btn-danger btn-bulk-delete" onclick="bulkDelete()" style="display:none; margin-right: 8px;">
+          Xóa <span class="bulk-count">0</span> đã chọn
+        </button>
+        <button class="btn btn-success" onclick="exportCSV()">⬇ Export CSV</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th style="width:30px"><input type="checkbox" class="select-all" onchange="toggleSelectAll(this, 'leadsTable')"></th>
+              <th>Name</th><th>Position</th><th>Company</th><th>Email</th><th>LinkedIn</th><th>Status</th><th>Date</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="leadsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- IMPORT -->
+    <div class="page" id="page-import">
+      <span style="font-size:13px;font-weight:500">Import Leads</span>
+      <div class="import-box">
+        <p>Paste JSON array of leads, or use the Chrome extension to crawl LinkedIn directly.</p>
+        <textarea id="importJson" placeholder='[{"name":"John Doe","title":"CEO","company":"Acme","email":"john@acme.com","linkedin_url":"https://linkedin.com/in/johndoe"}]'></textarea>
+        <div style="margin-top:12px;display:flex;gap:8px;justify-content:center">
+          <button class="btn btn-primary" onclick="importJSON()">⬆ Import JSON</button>
+          <button class="btn" onclick="document.getElementById('importJson').value=''">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DUPLICATES -->
+    <div class="page" id="page-dupes">
+      <div class="toolbar">
+        <span style="font-size:13px;font-weight:500">Duplicates</span>
+        <div style="flex:1"></div>
+        <span style="font-size:11px;color:var(--muted)">Leads with same email or LinkedIn URL</span>
+      </div>
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead><tr>
+              <th>Name</th><th>Company</th><th>Email</th><th>LinkedIn URL</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="dupesTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="page" id="page-settings">
+      <span style="font-size:13px;font-weight:500">Settings</span>
+      <div class="settings-card">
+        <div class="settings-row">
+          <div><div class="settings-label">Backend URL</div><div class="settings-sub">Flask API endpoint</div></div>
+          <input class="settings-input" id="settingBackend" value="http://localhost:5000" onchange="saveSettings()">
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Auto-refresh</div><div class="settings-sub">Refresh data every N seconds (0 = off)</div></div>
+          <input class="settings-input" id="settingRefresh" type="number" value="5" min="0" onchange="saveSettings()">
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Backend status</div></div>
+          <span id="settingStatus" style="font-size:12px;color:var(--muted)">Checking…</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
