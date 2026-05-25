@@ -1,5 +1,16 @@
 # 🔍 LeadFinder — Full Stack Setup
 
+Tool tự động crawl leads từ LinkedIn, gồm Chrome Extension + Flask API + Web Dashboard.
+
+## 🌐 Demo
+- **Web Dashboard**: https://leadfinder-app.netlify.app
+- **Backend API**: https://leadfinder.up.railway.app
+
+## 🛠 Tech Stack
+- **Extension**: Chrome Extension (Vanilla JS)
+- **Backend**: Python Flask + Gunicorn
+- **Frontend**: HTML/CSS/JS thuần
+- **Deploy**: Netlify (frontend) + Railway/Render (backend)
 ## Cấu trúc dự án
 
 ```
