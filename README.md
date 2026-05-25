@@ -4,13 +4,13 @@ Tool tự động crawl leads từ LinkedIn, gồm Chrome Extension + Flask API 
 
 ## 🌐 Demo
 - **Web Dashboard**: https://leadfinder-app.netlify.app
-- **Backend API**: https://leadfinder.up.railway.app
+- **Backend API**: https://leadfinder-backend-mtk5.onrender.com
 
 ## 🛠 Tech Stack
 - **Extension**: Chrome Extension (Vanilla JS)
 - **Backend**: Python Flask + Gunicorn
 - **Frontend**: HTML/CSS/JS thuần
-- **Deploy**: Netlify (frontend) + Railway/Render (backend)
+- **Deploy**: Netlify (frontend) + Render (backend)
 ## Cấu trúc dự án
 
 ```
