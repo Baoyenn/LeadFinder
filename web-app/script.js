@@ -1,4 +1,4 @@
-const API = () => document.getElementById("settingBackend")?.value || "http://localhost:5000";
+const API = () => document.getElementById("settingBackend")?.value || "https://leadfinder-1pfq.onrender.com";
 let allLeads = [];
 let searchQuery = "";
 let refreshTimer = null;
